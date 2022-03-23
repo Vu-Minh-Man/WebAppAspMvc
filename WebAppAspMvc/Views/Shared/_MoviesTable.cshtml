@@ -1,0 +1,33 @@
+﻿@using System.Data;
+
+@model WebAppAspMvc.ViewModels.MoviesViewModel
+
+<table class="table">
+    <tr>
+        @foreach (DataColumn header in Model.MoviesTable.Columns)
+        {
+            <th>@header.Caption</th>
+        }
+    </tr>
+    @foreach (DataRow movie in Model.MoviesTable.Rows)
+    {
+        <tr>
+            @foreach (DataColumn header in Model.MoviesTable.Columns)
+            {
+                @if (!Model.IsHyperlinkColumn.ContainsKey(header.ColumnName) || Model.IsHyperlinkColumn[header.ColumnName] == false)
+                {
+                    <td>@movie[header.ColumnName]</td>
+                }
+                else
+                {
+                    int id = movie.Field<int>("id");
+                    var urlParts = Model.Hyperlinks[id].Split('\\');
+                    var controller = urlParts[0];
+                    var action = urlParts[1];
+
+                    <td>@Html.ActionLink(movie.Field<string>(header.ColumnName), action, controller, new { id = id })</td>
+                }
+            }
+       </tr>   
+    }
+</table>

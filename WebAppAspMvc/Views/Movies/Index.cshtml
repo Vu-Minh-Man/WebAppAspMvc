@@ -1,0 +1,19 @@
+﻿
+@model WebAppAspMvc.ViewModels.MoviesViewModel
+
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<h1>Movies</h1>
+<ul>
+    @if (@Model.MoviesTable.Rows.Count == 0)
+    {
+        <text>There's no movies in database.</text>
+    }
+    else
+    {
+        @await Html.PartialAsync("_MoviesTable", @Model);
+    }
+</ul>
+
