@@ -42,7 +42,7 @@ namespace WebAppAspMvc.Controllers.Api
         {
             try
             {
-                var movie = await _context.Movies.Include(m => m.Genre).SingleOrDefaultAsync(x => x.Id == id);
+                var movie = await _context.Movies.Include(m => m.Genre).SingleOrDefaultAsync(m => m.Id == id);
 
                 if (movie is null)
                     return NotFound();
@@ -87,17 +87,19 @@ namespace WebAppAspMvc.Controllers.Api
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateMovie(int id, [FromBody] MovieDto movieDto)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || id != movieDto.Id)
                 return BadRequest();
 
             try
             {
-                var movie = await _context.Movies.SingleOrDefaultAsync(x => x.Id == id);
+                var movie = await _context.Movies.SingleOrDefaultAsync(m => m.Id == id);
 
                 if (movie is null)
                     return NotFound();
 
                 _mapper.Map(movieDto, movie);
+
+                _context.Entry(movie).State = EntityState.Modified;
 
                 await _context.SaveChangesAsync();
 
@@ -122,7 +124,7 @@ namespace WebAppAspMvc.Controllers.Api
         {
             try
             {
-                var movie = await _context.Movies.SingleOrDefaultAsync(x => x.Id == id);
+                var movie = await _context.Movies.SingleOrDefaultAsync(m => m.Id == id);
 
                 if (movie is null)
                     return NoContent();

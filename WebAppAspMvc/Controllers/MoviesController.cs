@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using Newtonsoft.Json;
 using AutoMapper;
 using WebAppAspMvc.Client;
@@ -59,12 +60,13 @@ namespace WebAppAspMvc.Controllers
             }
 
             HttpClient client = _client.CreateClient();
-            var genreDto = await GetGenre(client, movie.GenreId);
+            // Don't need genreDto here
+            //var genreDto = await GetGenre(client, movie.GenreId);
 
             var movieDto = _mapper.Map<MovieEditViewModel, MovieDto>(movie);
-            movieDto.GenreDto = genreDto;
+            //movieDto.GenreDto = genreDto;
 
-            var retrievedMovieDto = await UpdateMovie(client, movieDto.Id, movieDto);
+            var retrievedMovieDto = await UpdateMovie(client, movie.Id, movieDto);
 
             if (retrievedMovieDto is null)
                 return BadRequest();
@@ -114,8 +116,7 @@ namespace WebAppAspMvc.Controllers
         private async Task<MovieDto?> UpdateMovie(HttpClient client, int id, MovieDto movieDto)
         {
             var jsonData = JsonConvert.SerializeObject(movieDto);
-
-            using (HttpContent httpContent = new StringContent(jsonData))
+            using (HttpContent httpContent = new StringContent(jsonData, Encoding.UTF8, "application/json"))
             using (var response = await client.PutAsync("Movies/" + id, httpContent))
             {
                 if (response.IsSuccessStatusCode)
