@@ -13,7 +13,11 @@
     }
     else
     {
-        @await Html.PartialAsync("_MoviesTable", @Model);
+        @await Html.PartialAsync("_MoviesTable", @Model)
     }
 </ul>
 
+@section scripts
+{
+
+}

@@ -5,9 +5,9 @@
         // Ensure '/' at the rightmost of the url
         private static readonly string baseApiUrl = "https://localhost:7080/api/";
 
-        public static IHttpClientFactory? ClientFactory { get; set; }
+        public IHttpClientFactory? ClientFactory { get; set; }
 
-        public static HttpClient CreateClient()
+        public HttpClient CreateClient()
         {
             if (ClientFactory == null)
                 throw new InvalidOperationException();
@@ -18,7 +18,7 @@
             return client;
         }
 
-        public static HttpClient CreateClient(IHttpClientFactory clientFactory)
+        public HttpClient CreateClient(IHttpClientFactory clientFactory)
         {
             if (clientFactory == null)
                 throw new InvalidOperationException();

@@ -9,7 +9,7 @@ namespace WebAppAspMvc.Dtos
         [StringLength(255)]
         public string Title { get; set; }
 
-        public virtual GenreDto GenreDto { get; set; }
+        public GenreDto? GenreDto { get; set; }
 
         [StringLength(1023)]
         public string? Description { get; set; }

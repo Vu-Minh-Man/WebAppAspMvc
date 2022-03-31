@@ -13,7 +13,7 @@ namespace WebAppAspMvc.Controllers.Api
     public class MoviesController : ControllerBase
     {
         private readonly WebAppDbContext _context;
-        public readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public MoviesController(WebAppDbContext context, IMapper mapper)
         {
@@ -23,12 +23,12 @@ namespace WebAppAspMvc.Controllers.Api
 
         // GET /api/Movies
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<MovieDto>))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IList<MovieDto>))]
         public async Task<IActionResult> GetMovies()
         {
-            var movies = await _context.Movies.Include(m => m.Genre).ToListAsync();
+            IList<Movie> movies = await _context.Movies.Include(m => m.Genre).ToListAsync();
 
-            var moviesDto = _mapper.Map<List<MovieDto>>(movies);
+            var moviesDto = _mapper.Map<IList<Movie>, IList<MovieDto>>(movies);
 
             return Ok(moviesDto);
         }

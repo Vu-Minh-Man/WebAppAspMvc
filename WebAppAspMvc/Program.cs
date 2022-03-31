@@ -5,9 +5,15 @@ using WebAppAspMvc.Context;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container (controller contructor).
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = false;
+});
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<WebAppDbContext>(options => {
+builder.Services.AddDbContext<WebAppDbContext>(options =>
+{
     string connectstring = builder.Configuration.GetConnectionString("WebAppDbContext");
     options.UseSqlServer(connectstring);
 });
@@ -31,8 +37,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+// Specify endpionts
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();

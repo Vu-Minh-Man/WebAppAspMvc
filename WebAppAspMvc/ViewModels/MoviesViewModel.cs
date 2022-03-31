@@ -54,7 +54,7 @@ namespace WebAppAspMvc.ViewModels
                     row["description"] = movie.Description;
                     row["rating"] = movie.Rating;
                     MoviesTable.Rows.Add(row);
-                    Hyperlinks[movie.Id] = @"Movies\Details\" + movie.Id;
+                    Hyperlinks[movie.Id] = @"Movies\Edit\" + movie.Id;
                 }
             }
         }
